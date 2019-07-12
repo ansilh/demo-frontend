@@ -112,20 +112,23 @@ RUN set -x \
     && ln -sf /dev/stdout /var/log/nginx/access.log \
     && ln -sf /dev/stderr /var/log/nginx/error.log 
 # MediaWiki setup
-# RUN set -x \ 
-#   && apk add --no-cache gnupg \
-#    && mkdir /var/www \
-#    && cd /var/www \
-#    && wget https://releases.wikimedia.org/mediawiki/${WIKI_MAJOR_VERSION}/mediawiki-${WIKI_MAJOR_VERSION}.${WIKI_MINOR_VERSION}.tar.gz \
-#    && wget https://releases.wikimedia.org/mediawiki/${WIKI_MAJOR_VERSION}/mediawiki-${WIKI_MAJOR_VERSION}.${WIKI_MINOR_VERSION}.tar.gz.sig \
-#    && ls -l mediawiki-${WIKI_MAJOR_VERSION}.${WIKI_MINOR_VERSION}.tar.gz* \
-#    && gpg --recv-key 875BE862 \
-#    && wget https://www.mediawiki.org/keys/keys.txt \
-#    && gpg --import keys.txt \
-#    && gpg --verify mediawiki-${WIKI_MAJOR_VERSION}.${WIKI_MINOR_VERSION}.tar.gz.sig mediawiki-${WIKI_MAJOR_VERSION}.${WIKI_MINOR_VERSION}.tar.gz \
-#    && tar -zxf mediawiki-${WIKI_MAJOR_VERSION}.${WIKI_MINOR_VERSION}.tar.gz \
-#    && ln -s mediawiki-${WIKI_MAJOR_VERSION}.${WIKI_MINOR_VERSION}/ mediawiki \
-#    && chown -R nginx:nginx /var/www
+RUN set -x \ 
+   && apk add --no-cache gnupg \
+    && mkdir /var/www \
+    && cd /var/www \
+    && wget https://releases.wikimedia.org/mediawiki/${WIKI_MAJOR_VERSION}/mediawiki-${WIKI_MAJOR_VERSION}.${WIKI_MINOR_VERSION}.tar.gz \
+    && wget https://releases.wikimedia.org/mediawiki/${WIKI_MAJOR_VERSION}/mediawiki-${WIKI_MAJOR_VERSION}.${WIKI_MINOR_VERSION}.tar.gz.sig \
+    && ls -l mediawiki-${WIKI_MAJOR_VERSION}.${WIKI_MINOR_VERSION}.tar.gz* \
+    && gpg --recv-key 875BE862 \
+    && wget https://www.mediawiki.org/keys/keys.txt \
+    && gpg --import keys.txt \
+    && gpg --verify mediawiki-${WIKI_MAJOR_VERSION}.${WIKI_MINOR_VERSION}.tar.gz.sig mediawiki-${WIKI_MAJOR_VERSION}.${WIKI_MINOR_VERSION}.tar.gz \
+    && tar -zxf mediawiki-${WIKI_MAJOR_VERSION}.${WIKI_MINOR_VERSION}.tar.gz \
+    && ln -s mediawiki-${WIKI_MAJOR_VERSION}.${WIKI_MINOR_VERSION}/ mediawiki \
+    && chown -R nginx:nginx /var/www
+
+ADD mstakx.png /var/www/mediawiki/resources/assets/
+
 EXPOSE 80
 
 STOPSIGNAL SIGTERM
